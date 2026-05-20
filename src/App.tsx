@@ -307,6 +307,13 @@ export default function App() {
         )}
 
       </div>
+
+      {/* Global persistent footer with designer attributes */}
+      {currentScreen !== "workspace" && (
+        <footer id="global-designer-footer" className="w-full text-center py-4 bg-white border-t border-slate-200 text-[11px] font-extrabold tracking-widest text-slate-500 uppercase shrink-0">
+          Written by Brian McCarthy • Relational Simulator Engine
+        </footer>
+      )}
     </div>
   );
 }

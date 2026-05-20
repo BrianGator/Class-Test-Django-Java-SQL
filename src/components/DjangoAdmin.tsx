@@ -646,6 +646,12 @@ def exam_result(request, submission_id):
           </div>
         )}
 
+        {/* Dynamic Author Signature Footer section */}
+        <div className="pt-6 border-t border-slate-200/60 flex items-center justify-between text-xs text-slate-450 font-medium">
+          <span>Relational Schema Simulation Console</span>
+          <span className="font-extrabold uppercase tracking-widest text-blue-600">Written by Brian McCarthy</span>
+        </div>
+
       </div>
     </div>
   );

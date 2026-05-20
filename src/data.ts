@@ -11,22 +11,22 @@ export const initialCourses: Course[] = [
     durationMinutes: 180,
   },
   {
-    id: "python-basics",
-    name: "Introduction to Python Programming",
-    description: "Launch your developer journey with basic structures, functional modularity, error catching, and object-oriented syntax paradigms in Python.",
-    category: "Software Engineering",
-    difficulty: "Beginner",
-    modulesCount: 4,
-    durationMinutes: 120,
-  },
-  {
-    id: "data-science-intro",
-    name: "Data Science Tools & Methodology",
-    description: "Understand the core iterative workflows of data exploration, visual pipelines, statistical regressions, and cloud deployment engines.",
-    category: "Data Science",
+    id: "java-core",
+    name: "Java Platform & Enterprise Software Engineering",
+    description: "Deep dive into structural Java development, memory states, object oriented design patterns, strong type safety, and JVM garbage collections.",
+    category: "Java Engineering",
     difficulty: "Intermediate",
     modulesCount: 5,
     durationMinutes: 150,
+  },
+  {
+    id: "sql-db",
+    name: "SQL & Database Administration Principles",
+    description: "Understand database architecture, structural constraint criteria, dynamic aggregations, recursive joining, indexing keys, and transaction commits in SQL.",
+    category: "Database Systems",
+    difficulty: "Beginner",
+    modulesCount: 4,
+    durationMinutes: 120,
   }
 ];
 
@@ -81,32 +81,56 @@ export const initialQuestions: Question[] = [
     grade: 2
   },
 
-  // Python questions
+  // Java questions
   {
-    id: "q_py1",
-    courseId: "python-basics",
-    questionText: "Which keyword is used to define functions in Python?",
+    id: "q_jv1",
+    courseId: "java-core",
+    questionText: "Which of the following is correct regarding memory management and garbage collection in the Java Virtual Machine (JVM)?",
+    grade: 2
+  },
+  {
+    id: "q_jv2",
+    courseId: "java-core",
+    questionText: "How do you define a constant value in a Java class that cannot be modified after compilation?",
     grade: 1
   },
   {
-    id: "q_py2",
-    courseId: "python-basics",
-    questionText: "What is the output of len({'apple', 'banana', 'apple'}) inside Python?",
+    id: "q_jv3",
+    courseId: "java-core",
+    questionText: "Which exception in Java is categorized as a Checked Exception that must be handled or declared with 'throws' at compile-time?",
     grade: 1
+  },
+  {
+    id: "q_jv4",
+    courseId: "java-core",
+    questionText: "In Java, what is the primary structural difference between an Interface and an Abstract Class starting from Java 8?",
+    grade: 2
   },
 
-  // Data Science questions
+  // SQL questions
   {
-    id: "q_ds1",
-    courseId: "data-science-intro",
-    questionText: "Which Python package is primary choice for grid manipulation and multidimensional array equations?",
+    id: "q_sq1",
+    courseId: "sql-db",
+    questionText: "Which SQL JOIN clause returns all matching rows from both tables, plus unmatched rows from the left-side table with NULL for right-side attributes?",
     grade: 1
   },
   {
-    id: "q_ds2",
-    courseId: "data-science-intro",
-    questionText: "What is the primary goal of regression models in statistical data science?",
+    id: "q_sq2",
+    courseId: "sql-db",
+    questionText: "What is the purpose of using a Database Transaction with COMMIT and ROLLBACK command steps?",
+    grade: 2
+  },
+  {
+    id: "q_sq3",
+    courseId: "sql-db",
+    questionText: "In SQL, how can you compute the average grade score of submissions grouped by each distinct course identifier?",
     grade: 1
+  },
+  {
+    id: "q_sq4",
+    courseId: "sql-db",
+    questionText: "Which SQL constraint prevents inserting any duplicate keys whilst allowing at most one NULL value in a column?",
+    grade: 2
   }
 ];
 
@@ -319,105 +343,205 @@ export const initialChoices: Choice[] = [
     isCorrect: false
   },
 
-  // Python basics
+  // Java sub answers
   {
-    id: "c_py1_1",
-    questionId: "q_py1",
-    choiceText: "func",
+    id: "c_jv1_1",
+    questionId: "q_jv1",
+    choiceText: "JVM garbage collection automatically frees reference types from the Metaspace and stack frame pools exclusively.",
     isCorrect: false
   },
   {
-    id: "c_py1_2",
-    questionId: "q_py1",
-    choiceText: "def",
+    id: "c_jv1_2",
+    questionId: "q_jv1",
+    choiceText: "Garbage collection manages Heap Memory by identification and sweep of un-referenced dynamic objects.",
     isCorrect: true
   },
   {
-    id: "c_py1_3",
-    questionId: "q_py1",
-    choiceText: "define",
+    id: "c_jv1_3",
+    questionId: "q_jv1",
+    choiceText: "Mark-and-sweep guarantees that finalize() method is invoked instantly when reference drops to 0.",
     isCorrect: false
   },
   {
-    id: "c_py1_4",
-    questionId: "q_py1",
-    choiceText: "fn",
+    id: "c_jv1_4",
+    questionId: "q_jv1",
+    choiceText: "HotSpot disables stack allocation strictly, routing primitive variables to the Young Generation space.",
     isCorrect: false
   },
 
   {
-    id: "c_py2_1",
-    questionId: "q_py2",
-    choiceText: "3",
-    isCorrect: false
-  },
-  {
-    id: "c_py2_2",
-    questionId: "q_py2",
-    choiceText: "2 (since sets disallow duplicates)",
+    id: "c_jv2_1",
+    questionId: "q_jv2",
+    choiceText: "Using final static variables: e.g., 'public static final int LIMIT = 100;'",
     isCorrect: true
   },
   {
-    id: "c_py2_3",
-    questionId: "q_py2",
-    choiceText: "1",
+    id: "c_jv2_2",
+    questionId: "q_jv2",
+    choiceText: "Prefixing with C++-styled 'const static' syntax patterns.",
     isCorrect: false
   },
   {
-    id: "c_py2_4",
-    questionId: "q_py2",
-    choiceText: "SyntaxError",
-    isCorrect: false
-  },
-
-  // Data Science
-  {
-    id: "c_ds1_1",
-    questionId: "q_ds1",
-    choiceText: "Numpy",
-    isCorrect: true
-  },
-  {
-    id: "c_ds1_2",
-    questionId: "q_ds1",
-    choiceText: "Requests",
+    id: "c_jv2_3",
+    questionId: "q_jv2",
+    choiceText: "Using immutable annotations dynamically evaluated inside bytecode.",
     isCorrect: false
   },
   {
-    id: "c_ds1_3",
-    questionId: "q_ds1",
-    choiceText: "Django",
-    isCorrect: false
-  },
-  {
-    id: "c_ds1_4",
-    questionId: "q_ds1",
-    choiceText: "BeautifulSoup",
+    id: "c_jv2_4",
+    questionId: "q_jv2",
+    choiceText: "Declaring variables using the local Java 10 'var immutable' syntax.",
     isCorrect: false
   },
 
   {
-    id: "c_ds2_1",
-    questionId: "q_ds2",
-    choiceText: "Group data elements into clusters based on geometric proximity.",
+    id: "c_jv3_1",
+    questionId: "q_jv3",
+    choiceText: "NullPointerException",
     isCorrect: false
   },
   {
-    id: "c_ds2_2",
-    questionId: "q_ds2",
-    choiceText: "Predict a continuous numerical outcome based on historical input data correlation.",
+    id: "c_jv3_2",
+    questionId: "q_jv3",
+    choiceText: "IOException (input output exception classes)",
     isCorrect: true
   },
   {
-    id: "c_ds2_3",
-    questionId: "q_ds2",
-    choiceText: "Convert tabular matrix strings to markdown table layouts dynamically.",
+    id: "c_jv3_3",
+    questionId: "q_jv3",
+    choiceText: "ArrayIndexOutOfBoundsException",
     isCorrect: false
   },
   {
-    id: "c_ds2_4",
-    questionId: "q_ds2",
-    choiceText: "Examine static image contrast parameters inside neural vectors.",
+    id: "c_jv3_4",
+    questionId: "q_jv3",
+    choiceText: "ArithmeticException",
+    isCorrect: false
+  },
+
+  {
+    id: "c_jv4_1",
+    questionId: "q_jv4",
+    choiceText: "An interface can only have private methods whilst abstract classes support final static structures.",
+    isCorrect: false
+  },
+  {
+    id: "c_jv4_2",
+    questionId: "q_jv4",
+    choiceText: "An interface supports virtual method multiple inheritance and default method declarations; abstract classes can have constructors and instance state variable declarations.",
+    isCorrect: true
+  },
+  {
+    id: "c_jv4_3",
+    questionId: "q_jv4",
+    choiceText: "Interfaces allow concrete properties while Abstract classes disallow instance fields entirely.",
+    isCorrect: false
+  },
+  {
+    id: "c_jv4_4",
+    questionId: "q_jv4",
+    choiceText: "There is no difference in bytecode signatures after compiler output optimization.",
+    isCorrect: false
+  },
+
+  // SQL sub answers
+  {
+    id: "c_sq1_1",
+    questionId: "q_sq1",
+    choiceText: "FULL OUTER JOIN",
+    isCorrect: false
+  },
+  {
+    id: "c_sq1_2",
+    questionId: "q_sq1",
+    choiceText: "LEFT JOIN (or LEFT OUTER JOIN)",
+    isCorrect: true
+  },
+  {
+    id: "c_sq1_3",
+    questionId: "q_sq1",
+    choiceText: "RIGHT JOIN",
+    isCorrect: false
+  },
+  {
+    id: "c_sq1_4",
+    questionId: "q_sq1",
+    choiceText: "INNER JOIN",
+    isCorrect: false
+  },
+
+  {
+    id: "c_sq2_1",
+    questionId: "q_sq2",
+    choiceText: "To bypass key verification indexes for fast data operations.",
+    isCorrect: false
+  },
+  {
+    id: "c_sq2_2",
+    questionId: "q_sq2",
+    choiceText: "To enforce ACID properties by committing logical groups of database changes atomically or discarding them on error.",
+    isCorrect: true
+  },
+  {
+    id: "c_sq2_3",
+    questionId: "q_sq2",
+    choiceText: "To encrypt plain-text column fields under SSL layer handshakes.",
+    isCorrect: false
+  },
+  {
+    id: "c_sq2_4",
+    questionId: "q_sq2",
+    choiceText: "To automatically resolve deadlocks inside a multithreaded network driver.",
+    isCorrect: false
+  },
+
+  {
+    id: "c_sq3_1",
+    questionId: "q_sq3",
+    choiceText: "SELECT AVG(score) FROM submissions GROUP BY course_id;",
+    isCorrect: true
+  },
+  {
+    id: "c_sq3_2",
+    questionId: "q_sq3",
+    choiceText: "SELECT SUM(score) / COUNT(*) FROM submissions ORDER BY course_id;",
+    isCorrect: false
+  },
+  {
+    id: "c_sq3_3",
+    questionId: "q_sq3",
+    choiceText: "SELECT DISTINCT AVG(score) OVER course_id FROM submissions;",
+    isCorrect: false
+  },
+  {
+    id: "c_sq3_4",
+    questionId: "q_sq3",
+    choiceText: "SELECT course_id, MEDIAN(score) FROM submissions WHERE score = 80;",
+    isCorrect: false
+  },
+
+  {
+    id: "c_sq4_1",
+    questionId: "q_sq4",
+    choiceText: "PRIMARY KEY",
+    isCorrect: false
+  },
+  {
+    id: "c_sq4_2",
+    questionId: "q_sq4",
+    choiceText: "UNIQUE",
+    isCorrect: true
+  },
+  {
+    id: "c_sq4_3",
+    questionId: "q_sq4",
+    choiceText: "NOT NULL",
+    isCorrect: false
+  },
+  {
+    id: "c_sq4_4",
+    questionId: "q_sq4",
+    choiceText: "FOREIGN KEY",
     isCorrect: false
   }
 ];

@@ -186,9 +186,12 @@ export default function ExamWorkspace({
 
           <div className="p-6 mt-auto bg-slate-50 border-t border-slate-200 text-xs">
             <p className="text-[10px] text-slate-400 mb-2 uppercase font-bold tracking-widest">Instructions</p>
-            <p className="text-slate-600 leading-relaxed">
+            <p className="text-slate-600 leading-relaxed mb-3">
               Choose the most accurate response. You must achieve <strong className="text-slate-800">80% passing grade sum</strong> to complete this course. Jump to questions via the sidebar index grid at any time.
             </p>
+            <div className="border-t border-slate-250 pt-2 text-[10px] uppercase tracking-widest font-extrabold text-blue-600">
+              Written by Brian McCarthy
+            </div>
           </div>
         </aside>
 

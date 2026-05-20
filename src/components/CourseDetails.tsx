@@ -223,6 +223,12 @@ export default function CourseDetails({
 
         </div>
 
+        {/* Dynamic Author Signature Footer section */}
+        <div className="pt-6 border-t border-slate-200/60 flex items-center justify-between text-xs text-slate-450 font-medium">
+          <span>Syllabus Assessment Details Panel</span>
+          <span className="font-extrabold uppercase tracking-widest text-blue-600">Written by Brian McCarthy</span>
+        </div>
+
       </div>
     </div>
   );
