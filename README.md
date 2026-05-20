@@ -1,6 +1,6 @@
-# Technical Specifications Guide: Class-Test-Django-Java-SQL
+# Technical Specifications Guide: Class-Test-Django-Python-SQL
 
-Interactive Class Assessment Portal implementing robust educational testing mechanics modeled around concepts of **Django Full-Stack Development**, **Java Platform Engineering**, and **SQL Relational Databases**.
+Interactive Class Assessment Portal implementing robust educational testing mechanics modeled around concepts of **Django Full-Stack Development**, **Python Platform Engineering**, and **SQL Relational Databases**.
 
 Designed and Authored by: **Brian McCarthy**
 
@@ -10,10 +10,9 @@ Designed and Authored by: **Brian McCarthy**
 
 This portal models and simulates multiple backend language mechanics using standard safe web standards:
 1. **TypeScript (TSX):** Full client-side application architecture, strict interface typing, state management, and real-time grading logic.
-2. **Python:** Python Django model schemas (`models.py`) and standard view handler controllers (`views.py`) rendered inside the simulation blueprints tabs.
-3. **Java:** Course content modules and structural testing elements modeling Object Oriented design, exception categories, and JVM memory allocation definitions.
-4. **HTML5 & CSS3:** Structural rendering with semantic HTML elements and responsive responsive visual skins utilizing Tailwind utility engines.
-5. **SQL:** Course questions and answer options targeting relational normalization rules (1NF/2NF/3NF), unique constraints, transactional properties, joins, and dynamic grouping.
+2. **Python:** Core language principles (reference counting, cyclic GC, custom class representations, name mangling with double leading underscores, unbound local errors, generators, list comprehensions), plus Python Django model schemas (`models.py`) and standard view handler controllers (`views.py`) rendered inside the simulation blueprints tabs.
+3. **HTML5 & CSS3:** Structural rendering with semantic HTML elements and responsive responsive visual skins utilizing Tailwind utility engines.
+4. **SQL:** Course questions and answer options targeting relational normalization rules (1NF/2NF/3NF), unique constraints, transactional properties, joins, and dynamic grouping.
 
 ---
 
@@ -30,11 +29,11 @@ This portal models and simulates multiple backend language mechanics using stand
 ## 📂 Structural Files
 
 - **`/index.html`**
-  Primary bootstrap element referencing the compiled main entry script, featuring the project title: `Class-Test-Django-Java-SQL`.
+  Primary bootstrap element referencing the compiled main entry script, featuring the project title: `Class-Test-Django-Python-SQL`.
 - **`/src/types.ts`**
   Strict TypeScript typing interfaces for `Course`, `Question`, `Choice`, and `ExamSubmission` models.
 - **`/src/data.ts`**
-  Base database seed elements including seed courses, questions, and matching choices representing Java, Django, and SQL questions.
+  Base database seed elements including seed courses, questions, and matching choices representing Python, Django, and SQL questions.
 - **`/src/App.tsx`**
   Primary application router and central execution model. Coordinates data cascades, cascades deletion constraints, implements Django database reset controls, and evaluates final grading sums.
 - **`/src/components/Dashboard.tsx`**
@@ -52,7 +51,7 @@ This portal models and simulates multiple backend language mechanics using stand
 
 ## 📖 How to Use
 
-1. **Browse Courses:** Select from the course catalog cards highlighting Django, Java, or SQL.
+1. **Browse Courses:** Select from the course catalog cards highlighting Django, Python, or SQL.
 2. **Review Syllabus:** Inspect the specific questions, credits weights, and module counts in the syllabus study views.
 3. **Take Assessments:** Click the **Start Assessment** button to render the workspaces. Submit choices, bookmark items for review via flags, or monitor time.
 4. **View Diagnostics:** Review your submitted answers side-by-side with database correct keys. Analyze the simulated **Django ORM traces** displaying the exact server query logic.

@@ -1,5 +1,5 @@
 {
-  "name": "Class-Test-Django-Java-SQL",
+  "name": "Class-Test-Django-Python-SQL",
   "description": "An interactive course assessment platform built with Django models and views simulator, featuring live question administration, correct option choices, attempt tracking, and robust score evaluations.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]

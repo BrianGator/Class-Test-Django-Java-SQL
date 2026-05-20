@@ -11,10 +11,10 @@ export const initialCourses: Course[] = [
     durationMinutes: 180,
   },
   {
-    id: "java-core",
-    name: "Java Platform & Enterprise Software Engineering",
-    description: "Deep dive into structural Java development, memory states, object oriented design patterns, strong type safety, and JVM garbage collections.",
-    category: "Java Engineering",
+    id: "python-core",
+    name: "Python Core & Object-Oriented Software Engineering",
+    description: "Deep dive into dynamic Python development, reference count allocations, object-oriented custom classes, magic methods, list comprehensions, and generators.",
+    category: "Python Engineering",
     difficulty: "Intermediate",
     modulesCount: 5,
     durationMinutes: 150,
@@ -81,29 +81,29 @@ export const initialQuestions: Question[] = [
     grade: 2
   },
 
-  // Java questions
+  // Python questions
   {
-    id: "q_jv1",
-    courseId: "java-core",
-    questionText: "Which of the following is correct regarding memory management and garbage collection in the Java Virtual Machine (JVM)?",
+    id: "q_py1",
+    courseId: "python-core",
+    questionText: "Which of the following is correct regarding memory management and garbage collection in Python (CPython)?",
     grade: 2
   },
   {
-    id: "q_jv2",
-    courseId: "java-core",
-    questionText: "How do you define a constant value in a Java class that cannot be modified after compilation?",
+    id: "q_py2",
+    courseId: "python-core",
+    questionText: "How do you define a constant-like module variable, or represent a private attribute name conventionally in standard Python classes?",
     grade: 1
   },
   {
-    id: "q_jv3",
-    courseId: "java-core",
-    questionText: "Which exception in Java is categorized as a Checked Exception that must be handled or declared with 'throws' at compile-time?",
+    id: "q_py3",
+    courseId: "python-core",
+    questionText: "Which of the following is a built-in exception in Python that is raised when trying to access a local variable before it has been assigned a value?",
     grade: 1
   },
   {
-    id: "q_jv4",
-    courseId: "java-core",
-    questionText: "In Java, what is the primary structural difference between an Interface and an Abstract Class starting from Java 8?",
+    id: "q_py4",
+    courseId: "python-core",
+    questionText: "What is the primary memory and execution difference between Python generators and custom list comprehensions?",
     grade: 2
   },
 
@@ -343,104 +343,104 @@ export const initialChoices: Choice[] = [
     isCorrect: false
   },
 
-  // Java sub answers
+  // Python sub answers
   {
-    id: "c_jv1_1",
-    questionId: "q_jv1",
-    choiceText: "JVM garbage collection automatically frees reference types from the Metaspace and stack frame pools exclusively.",
+    id: "c_py1_1",
+    questionId: "q_py1",
+    choiceText: "Python does not employ reference counting, relying strictly on mark-and-sweep cycles once every 10 seconds.",
     isCorrect: false
   },
   {
-    id: "c_jv1_2",
-    questionId: "q_jv1",
-    choiceText: "Garbage collection manages Heap Memory by identification and sweep of un-referenced dynamic objects.",
+    id: "c_py1_2",
+    questionId: "q_py1",
+    choiceText: "Python manages memory mainly through reference counting paired with a generational cyclic garbage collector for detecting reference cycles.",
     isCorrect: true
   },
   {
-    id: "c_jv1_3",
-    questionId: "q_jv1",
-    choiceText: "Mark-and-sweep guarantees that finalize() method is invoked instantly when reference drops to 0.",
+    id: "c_py1_3",
+    questionId: "q_py1",
+    choiceText: "Python transfers all object garbage-disposal logic directly to the operating system kernel's native free() calls instantly.",
     isCorrect: false
   },
   {
-    id: "c_jv1_4",
-    questionId: "q_jv1",
-    choiceText: "HotSpot disables stack allocation strictly, routing primitive variables to the Young Generation space.",
+    id: "c_py1_4",
+    questionId: "q_py1",
+    choiceText: "CPython disables memory re-allocation entirely, enforcing instance attributes to reside on a local thread stack.",
     isCorrect: false
   },
 
   {
-    id: "c_jv2_1",
-    questionId: "q_jv2",
-    choiceText: "Using final static variables: e.g., 'public static final int LIMIT = 100;'",
+    id: "c_py2_1",
+    questionId: "q_py2",
+    choiceText: "Naming the attribute with a double leading underscore (e.g., '__secret') to trigger name mangling, and keeping constant conventions in uppercase (e.g., 'LIMIT').",
     isCorrect: true
   },
   {
-    id: "c_jv2_2",
-    questionId: "q_jv2",
-    choiceText: "Prefixing with C++-styled 'const static' syntax patterns.",
+    id: "c_py2_2",
+    questionId: "q_py2",
+    choiceText: "Prefixing with C++-styled 'const static' syntax patterns inside of a nested function block.",
     isCorrect: false
   },
   {
-    id: "c_jv2_3",
-    questionId: "q_jv2",
-    choiceText: "Using immutable annotations dynamically evaluated inside bytecode.",
+    id: "c_py2_3",
+    questionId: "q_py2",
+    choiceText: "Using immutable annotations dynamically evaluated inside bytecode containers.",
     isCorrect: false
   },
   {
-    id: "c_jv2_4",
-    questionId: "q_jv2",
-    choiceText: "Declaring variables using the local Java 10 'var immutable' syntax.",
+    id: "c_py2_4",
+    questionId: "q_py2",
+    choiceText: "Declaring variables using a local JS-like 'const var' keyword combination.",
     isCorrect: false
   },
 
   {
-    id: "c_jv3_1",
-    questionId: "q_jv3",
-    choiceText: "NullPointerException",
+    id: "c_py3_1",
+    questionId: "q_py3",
+    choiceText: "NullReferenceError",
     isCorrect: false
   },
   {
-    id: "c_jv3_2",
-    questionId: "q_jv3",
-    choiceText: "IOException (input output exception classes)",
+    id: "c_py3_2",
+    questionId: "q_py3",
+    choiceText: "UnboundLocalError",
     isCorrect: true
   },
   {
-    id: "c_jv3_3",
-    questionId: "q_jv3",
-    choiceText: "ArrayIndexOutOfBoundsException",
+    id: "c_py3_3",
+    questionId: "q_py3",
+    choiceText: "IndexError",
     isCorrect: false
   },
   {
-    id: "c_jv3_4",
-    questionId: "q_jv3",
-    choiceText: "ArithmeticException",
+    id: "c_py3_4",
+    questionId: "q_py3",
+    choiceText: "AttributeError",
     isCorrect: false
   },
 
   {
-    id: "c_jv4_1",
-    questionId: "q_jv4",
-    choiceText: "An interface can only have private methods whilst abstract classes support final static structures.",
+    id: "c_py4_1",
+    questionId: "q_py4",
+    choiceText: "Generators can only handle string outputs while list comprehensions can output multi-dimensional dictionary structures.",
     isCorrect: false
   },
   {
-    id: "c_jv4_2",
-    questionId: "q_jv4",
-    choiceText: "An interface supports virtual method multiple inheritance and default method declarations; abstract classes can have constructors and instance state variable declarations.",
+    id: "c_py4_2",
+    questionId: "q_py4",
+    choiceText: "List comprehensions compute and hold all elements in memory instantly as a list, whereas generators utilize lazy evaluation returning an iterator to yield elements on-demand.",
     isCorrect: true
   },
   {
-    id: "c_jv4_3",
-    questionId: "q_jv4",
-    choiceText: "Interfaces allow concrete properties while Abstract classes disallow instance fields entirely.",
+    id: "c_py4_3",
+    questionId: "q_py4",
+    choiceText: "Generators do not support iter expressions while list comprehensions are optimized thread-safe parallel wrappers.",
     isCorrect: false
   },
   {
-    id: "c_jv4_4",
-    questionId: "q_jv4",
-    choiceText: "There is no difference in bytecode signatures after compiler output optimization.",
+    id: "c_py4_4",
+    questionId: "q_py4",
+    choiceText: "There is no difference in memory footprints between list comprehensions and generators after compiler output compilation.",
     isCorrect: false
   },
 
