@@ -66,31 +66,30 @@ def show_exam_result(request, course_id, submission_id):
     if submission.enrollment.user != request.user:
         return render(request, 'onlinecourse/error.html', {'message': 'Unauthorized attempt access.'})
 
-    total_course_score = 0
-    student_score = 0
-    results_diagnostic = []
-
     # Get all course questions and choice states
     questions = Question.objects.filter(course=course)
     submission_choices = submission.choices.all()
     selected_choice_ids = set(submission_choices.values_list('id', flat=True))
 
+    total_score = 0
+    possible_score = 0
+    results_diagnostic = []
+
     for question in questions:
-        total_course_score += question.grade
+        possible_score += question.grade
         
         # Fetch matching choices for evaluation
         question_choices = question.choice_set.all()
         correct_choices = question_choices.filter(is_correct=True)
-        correct_ids = set(correct_choices.values_list('id', flat=True))
         
         # Selected choices for this particular question in the submissions dataset
         selected_for_q_ids = set(question_choices.values_list('id', flat=True)) & selected_choice_ids
         
-        # Is correct if correct choices matches submitted choices exactly
-        is_correct = (correct_ids == selected_for_q_ids) and (len(correct_ids) > 0)
+        # Call model helper method is_get_score() to check accuracy
+        is_correct = question.is_get_score(list(selected_for_q_ids))
         
         question_score = question.grade if is_correct else 0
-        student_score += question_score
+        total_score += question_score
         
         results_diagnostic.append({
             'question': question,
@@ -106,15 +105,17 @@ def show_exam_result(request, course_id, submission_id):
         })
 
     # Passing grade threshold metric of 80% (0.80)
-    score_percentage = (student_score / total_course_score * 100) if total_course_score > 0 else 0
+    score_percentage = (total_score / possible_score * 100) if possible_score > 0 else 0
     passed = score_percentage >= 80.0
 
     context = {
         'course': course,
         'submission': submission,
         'results_diagnostic': results_diagnostic,
-        'student_score': student_score,
-        'total_course_score': total_course_score,
+        'student_score': total_score,
+        'total_course_score': possible_score,
+        'total_score': total_score,
+        'possible_score': possible_score,
         'score_percentage': round(score_percentage, 1),
         'passed': passed,
         'designer_credit': "Written by Brian McCarthy"

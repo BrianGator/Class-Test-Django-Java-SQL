@@ -3,52 +3,52 @@ CLASS-TEST-DJANGO-PYTHON-SQL DELIVERABLES & TRACEABILITY INDEX
 ================================================================================
 Author: Brian McCarthy
 Date: May 24, 2026
-Base GitHub Repository: https://github.com/BrianGator/Class-Test-Django-Python-SQL/
+Base GitHub Repository: https://github.com/BrianGator/tfjzl-final-cloud-app-with-database/
 ================================================================================
 
 --------------------------------------------------------------------------------
 Task 1: GitHub URL of models.py
 --------------------------------------------------------------------------------
 Description: Includes the Question, Choice, and Submission relational database models.
-GitHub URL: https://github.com/BrianGator/Class-Test-Django-Python-SQL/blob/main/onlinecourse/models.py
+GitHub URL: https://github.com/BrianGator/tfjzl-final-cloud-app-with-database/blob/main/onlinecourse/models.py
 
 --------------------------------------------------------------------------------
 Task 2: GitHub URL of admin.py
 --------------------------------------------------------------------------------
 Description: Includes seven imported classes along with implementations for QuestionInline, ChoiceInline, QuestionAdmin, and LessonAdmin.
-GitHub URL: https://github.com/BrianGator/Class-Test-Django-Python-SQL/blob/main/onlinecourse/admin.py
+GitHub URL: https://github.com/BrianGator/tfjzl-final-cloud-app-with-database/blob/main/onlinecourse/admin.py
 
 --------------------------------------------------------------------------------
 Task 3: Admin Site Screenshot URL
 --------------------------------------------------------------------------------
 Description: Displays "Authentication and Authorization" section and "OnlineCourse" section in high-fidelity simulated graphics.
-GitHub URL (PNG): https://github.com/BrianGator/Class-Test-Django-Python-SQL/blob/main/project-deliverables/03-admin-site.png
-GitHub URL (SVG): https://github.com/BrianGator/Class-Test-Django-Python-SQL/blob/main/project-deliverables/03-admin-site.svg
+GitHub URL (PNG): https://github.com/BrianGator/tfjzl-final-cloud-app-with-database/blob/main/project-deliverables/03-admin-site.png
+GitHub URL (SVG): https://github.com/BrianGator/tfjzl-final-cloud-app-with-database/blob/main/project-deliverables/03-admin-site.svg
 
 --------------------------------------------------------------------------------
 Task 4: GitHub URL of course_details_bootstrap.html
 --------------------------------------------------------------------------------
 Description: Course details visual interface template to display course information and related lessons using Django template tags and Bootstrap elements.
-GitHub URL: https://github.com/BrianGator/Class-Test-Django-Python-SQL/blob/main/onlinecourse/templates/onlinecourse/course_details_bootstrap.html
+GitHub URL: https://github.com/BrianGator/tfjzl-final-cloud-app-with-database/blob/main/onlinecourse/templates/onlinecourse/course_details_bootstrap.html
 
 --------------------------------------------------------------------------------
 Task 5: GitHub URL of views.py
 --------------------------------------------------------------------------------
 Description: Contains the controllers, specifically 'submit' and 'show_exam_result' logic, to compute scores based on correct choice values.
-GitHub URL: https://github.com/BrianGator/Class-Test-Django-Python-SQL/blob/main/onlinecourse/views.py
+GitHub URL: https://github.com/BrianGator/tfjzl-final-cloud-app-with-database/blob/main/onlinecourse/views.py
 
 --------------------------------------------------------------------------------
 Task 6: GitHub URL of urls.py
 --------------------------------------------------------------------------------
 Description: Specifies the route paths directing submission payloads and exam result rendering.
-GitHub URL: https://github.com/BrianGator/Class-Test-Django-Python-SQL/blob/main/onlinecourse/urls.py
+GitHub URL: https://github.com/BrianGator/tfjzl-final-cloud-app-with-database/blob/main/onlinecourse/urls.py
 
 --------------------------------------------------------------------------------
 Task 7: Mock Exam Success Attempt Screenshot URL
 --------------------------------------------------------------------------------
 Description: Displays successful assessment score, exam breakdown logs, correct diagnostics, and 'Congratulations' feedback.
-GitHub URL (PNG): https://github.com/BrianGator/Class-Test-Django-Python-SQL/blob/main/project-deliverables/07-final.png
-GitHub URL (SVG): https://github.com/BrianGator/Class-Test-Django-Python-SQL/blob/main/project-deliverables/07-final.svg
+GitHub URL (PNG): https://github.com/BrianGator/tfjzl-final-cloud-app-with-database/blob/main/project-deliverables/07-final.png
+GitHub URL (SVG): https://github.com/BrianGator/tfjzl-final-cloud-app-with-database/blob/main/project-deliverables/07-final.svg
 
 ================================================================================
 End of Deliverables Report
