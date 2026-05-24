@@ -1,5 +1,5 @@
 import { Course, Question, Choice, ExamSubmission } from "../types";
-import { BookOpen, Award, CheckCircle2, AlertCircle, Clock, Zap, ArrowRight, UserCheck } from "lucide-react";
+import { BookOpen, Award, CheckCircle2, AlertCircle, Clock, Zap, ArrowRight, UserCheck, ExternalLink } from "lucide-react";
 
 interface DashboardProps {
   courses: Course[];
@@ -8,6 +8,8 @@ interface DashboardProps {
   submissions: ExamSubmission[];
   onSelectCourse: (courseId: string) => void;
   onGoToAdmin: () => void;
+  onLaunchMockPassedSimulator?: () => void;
+  onGoToDeliverables: () => void;
 }
 
 export default function Dashboard({
@@ -17,6 +19,8 @@ export default function Dashboard({
   submissions,
   onSelectCourse,
   onGoToAdmin,
+  onLaunchMockPassedSimulator,
+  onGoToDeliverables,
 }: DashboardProps) {
 
   // Stats summaries
@@ -42,15 +46,40 @@ export default function Dashboard({
             <p className="text-blue-100 text-sm md:text-base leading-relaxed">
               Successfully complete evaluation exams with an <strong className="text-white">80% pass criteria</strong> score to earn verifiable completion certs. Add custom exam questions or new courses in the Django Admin Simulator below.
             </p>
+
+            {/* Project Deliverables Text Link */}
+            <div className="pt-3 pb-1 border-t border-white/10 flex items-center">
+              <button
+                id="view-deliverables-text-link"
+                onClick={onGoToDeliverables}
+                className="text-xs font-bold uppercase tracking-widest text-emerald-300 hover:text-white underline hover:no-underline transition flex items-center gap-1.5 cursor-pointer bg-transparent border-none p-0 text-left"
+              >
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                Project Deliverables
+                <ArrowRight className="w-3 h-3" />
+              </button>
+            </div>
+
             <div className="pt-4 flex flex-wrap gap-3">
               <button
                 id="dashboard-admin-btn"
                 onClick={onGoToAdmin}
-                className="px-5 py-2.5 bg-white text-blue-700 hover:bg-blue-50 text-xs font-bold rounded-lg shadow transition duration-200 transform active:scale-95 flex items-center gap-2"
+                className="px-5 py-2.5 bg-white text-blue-700 hover:bg-slate-100 text-xs font-bold rounded-lg shadow transition duration-200 transform active:scale-95 flex items-center gap-2"
               >
                 <Zap className="w-4 h-4 text-blue-600" />
                 Launch Django Admin Simulator
               </button>
+
+              {onLaunchMockPassedSimulator && (
+                <button
+                  id="dashboard-simulator-btn"
+                  onClick={onLaunchMockPassedSimulator}
+                  className="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold rounded-lg shadow transition duration-200 transform active:scale-95 flex items-center gap-2"
+                >
+                  <Award className="w-4 h-4" />
+                  Launch mock exam passed simulator
+                </button>
+              )}
             </div>
           </div>
         </div>

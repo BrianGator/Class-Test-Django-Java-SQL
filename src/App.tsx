@@ -6,6 +6,7 @@ import DjangoAdmin from "./components/DjangoAdmin";
 import CourseDetails from "./components/CourseDetails";
 import ExamWorkspace from "./components/ExamWorkspace";
 import ExamResult from "./components/ExamResult";
+import ProjectDeliverables from "./components/ProjectDeliverables";
 import { Database, Layout, BookOpen, AlertCircle, Sparkles } from "lucide-react";
 
 export default function App() {
@@ -16,7 +17,7 @@ export default function App() {
   const [submissions, setSubmissions] = useState<ExamSubmission[]>([]);
 
   // Navigation states
-  const [currentScreen, setCurrentScreen] = useState<"dashboard" | "admin" | "details" | "workspace" | "result">("dashboard");
+  const [currentScreen, setCurrentScreen] = useState<"dashboard" | "admin" | "details" | "workspace" | "result" | "deliverables">("dashboard");
   const [activeCourseId, setActiveCourseId] = useState<string | null>(null);
   const [activeSubmissionId, setActiveSubmissionId] = useState<string | null>(null);
 
@@ -157,6 +158,58 @@ export default function App() {
     setCurrentScreen("result");
   };
 
+  // Launch mock exam passed simulator
+  const handleLaunchMockPassedSimulator = () => {
+    const courseId = "django-advanced";
+    const mockAnswers: Record<string, string> = {
+      q1: "c1_2", // correct (2 pts)
+      q2: "c2_2", // correct (1 pt)
+      q3: "c3_1", // correct (1 pt)
+      q4: "c4_1", // incorrect (0 pts, correct is c4_2)
+      q5: "c5_2", // correct (1 pt)
+      q6: "c6_2", // correct (2 pts)
+      q7: "c7_2", // correct (1 pt)
+      q8: "c8_2", // correct (2 pts)
+    };
+
+    // Calculate score based on actual seeded questions/choices in the user state
+    const courseQuestions = questions.filter(q => q.courseId === courseId);
+    let scoreAchieved = 0;
+    let scoreTotal = 0;
+
+    courseQuestions.forEach(q => {
+      scoreTotal += q.grade;
+      const selectedChoiceId = mockAnswers[q.id];
+      if (selectedChoiceId) {
+        const choiceObj = choices.find(c => c.id === selectedChoiceId);
+        if (choiceObj && choiceObj.isCorrect) {
+          scoreAchieved += q.grade;
+        }
+      }
+    });
+
+    const scorePercent = scoreTotal > 0 ? Math.round((scoreAchieved / scoreTotal) * 100) : 0;
+    const passed = scorePercent >= 80;
+
+    const submission: ExamSubmission = {
+      id: "mock_sub_" + Date.now(),
+      courseId: courseId,
+      answers: mockAnswers,
+      score: scorePercent,
+      scoreAchieved,
+      scoreTotal,
+      passed,
+      submittedAt: new Date().toISOString()
+    };
+
+    // Append to local storage list & transfer screen
+    const nextSubmissions = [...submissions, submission];
+    updateSubmissions(nextSubmissions);
+    setActiveCourseId(courseId);
+    setActiveSubmissionId(submission.id);
+    setCurrentScreen("result");
+  };
+
   // Find active entities
   const activeCourse = courses.find(c => c.id === activeCourseId);
   const activeSubmission = submissions.find(s => s.id === activeSubmissionId);
@@ -198,7 +251,7 @@ export default function App() {
                   setActiveCourseId(null);
                 }}
                 className={`py-1.5 px-4 rounded text-xs tracking-wide font-extrabold flex items-center gap-1.5 transition ${
-                  currentScreen === "dashboard" || currentScreen === "details" || currentScreen === "result"
+                  currentScreen === "dashboard" || currentScreen === "details" || currentScreen === "result" || currentScreen === "deliverables"
                     ? "bg-white text-blue-600 shadow-sm"
                     : "text-slate-500 hover:text-slate-800"
                 }`}
@@ -242,6 +295,8 @@ export default function App() {
               setCurrentScreen("details");
             }}
             onGoToAdmin={() => setCurrentScreen("admin")}
+            onLaunchMockPassedSimulator={handleLaunchMockPassedSimulator}
+            onGoToDeliverables={() => setCurrentScreen("deliverables")}
           />
         )}
 
@@ -250,6 +305,7 @@ export default function App() {
             courses={courses}
             questions={questions}
             choices={choices}
+            submissions={submissions}
             onAddCourse={handleAddCourse}
             onAddQuestion={handleAddQuestion}
             onAddChoice={handleAddChoice}
@@ -257,6 +313,7 @@ export default function App() {
             onDeleteQuestion={handleDeleteQuestion}
             onDeleteChoice={handleDeleteChoice}
             onResetData={handleResetData}
+            onLaunchMockPassedSimulator={handleLaunchMockPassedSimulator}
           />
         )}
 
@@ -302,6 +359,14 @@ export default function App() {
             onViewDashboard={() => {
               setCurrentScreen("dashboard");
               setActiveCourseId(null);
+            }}
+          />
+        )}
+
+        {currentScreen === "deliverables" && (
+          <ProjectDeliverables
+            onBack={() => {
+              setCurrentScreen("dashboard");
             }}
           />
         )}
