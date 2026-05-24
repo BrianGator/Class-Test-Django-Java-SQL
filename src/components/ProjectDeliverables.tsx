@@ -12,7 +12,7 @@ export default function ProjectDeliverables({ onBack }: ProjectDeliverablesProps
       title: "models.py (Django Models)",
       icon: DatabaseIcon,
       accentColor: "from-emerald-500 to-teal-600",
-      link: "https://github.com/BrianGator/Class-Test-Django-Python-SQL/blob/main/onlinecourse/models.py",
+      link: "https://github.com/BrianGator/tfjzl-final-cloud-app-with-database/blob/main/onlinecourse/models.py",
       linkLabel: "View models.py on GitHub",
       description: "Includes the core Django database models representing the relational schema: Question, Choice, and Submission. Aligned with course details representation.",
       technologies: ["Django ORM", "Python", "SQLite / PostgreSQL"]
@@ -22,7 +22,7 @@ export default function ProjectDeliverables({ onBack }: ProjectDeliverablesProps
       title: "admin.py (Django Admin Config)",
       icon: ShieldIcon,
       accentColor: "from-blue-500 to-purple-600",
-      link: "https://github.com/BrianGator/Class-Test-Django-Python-SQL/blob/main/onlinecourse/admin.py",
+      link: "https://github.com/BrianGator/tfjzl-final-cloud-app-with-database/blob/main/onlinecourse/admin.py",
       linkLabel: "View admin.py on GitHub",
       description: "Registers and configures structural administration items: QuestionInline, ChoiceInline stacked editors, QuestionAdmin controls, and LessonAdmin details.",
       technologies: ["Django Contrib Admin", "Model Inline Editors"]
@@ -32,17 +32,17 @@ export default function ProjectDeliverables({ onBack }: ProjectDeliverablesProps
       title: "Django Admin Site Screenshot",
       icon: ImageIcon,
       accentColor: "from-pink-500 to-rose-600",
-      link: "https://github.com/BrianGator/Class-Test-Django-Python-SQL/blob/main/project-deliverables/03-admin-site.svg",
+      link: "https://github.com/BrianGator/tfjzl-final-cloud-app-with-database/blob/main/project-deliverables/03-admin-site.png",
       linkLabel: "View Admin Screen Asset",
-      description: "Visual evidence of the configured Django site, showcasing custom registered user administration sections for authentication groups and academic model courses.",
-      technologies: ["Vector Artwork", "Django Admin Console"]
+      description: "Visual evidence of the configured Django site, showcasing custom registered user administration sections with Choices, Courses, Instructors, Learners, Lessons, Questions, and Submissions.",
+      technologies: ["Screenshot", "Django Admin Console"]
     },
     {
       task: "Task 4",
       title: "course_details_bootstrap.html (Exam Submission Template)",
       icon: CodeIcon,
       accentColor: "from-orange-500 to-amber-600",
-      link: "https://github.com/BrianGator/Class-Test-Django-Python-SQL/blob/main/onlinecourse/templates/onlinecourse/course_details_bootstrap.html",
+      link: "https://github.com/BrianGator/tfjzl-final-cloud-app-with-database/blob/main/onlinecourse/templates/onlinecourse/course_details_bootstrap.html",
       linkLabel: "View HTML Template",
       description: "User-facing HTML file engineered with native Django template tags to process loops: nested choice selections, question lists, and Bootstrap layout formats.",
       technologies: ["Django Template Language", "HTML5", "Bootstrap 4"]
@@ -52,9 +52,9 @@ export default function ProjectDeliverables({ onBack }: ProjectDeliverablesProps
       title: "views.py (Submission Processing & Grading)",
       icon: ServerIcon,
       accentColor: "from-cyan-500 to-blue-600",
-      link: "https://github.com/BrianGator/Class-Test-Django-Python-SQL/blob/main/onlinecourse/views.py",
+      link: "https://github.com/BrianGator/tfjzl-final-cloud-app-with-database/blob/main/onlinecourse/views.py",
       linkLabel: "View views.py on GitHub",
-      description: "Back-end Python request handler including 'submit_exam' and 'show_exam_result' views. Computes score tallies, asserts 80% passing standard, and updates records.",
+      description: "Back-end Python request handler including 'submit' and 'show_exam_result' views. Computes score tallies utilizing is_get_score() method to safely calculate total and possible scores, asserts 80% passing, and updates records.",
       technologies: ["Python Backend", "HTTP Handlers", "Academic Grading Logic"]
     },
     {
@@ -62,9 +62,9 @@ export default function ProjectDeliverables({ onBack }: ProjectDeliverablesProps
       title: "urls.py (Route Mapping Config)",
       icon: NetworkIcon,
       accentColor: "from-violet-500 to-indigo-600",
-      link: "https://github.com/BrianGator/Class-Test-Django-Python-SQL/blob/main/onlinecourse/urls.py",
+      link: "https://github.com/BrianGator/tfjzl-final-cloud-app-with-database/blob/main/onlinecourse/urls.py",
       linkLabel: "View urls.py on GitHub",
-      description: "Binds endpoint URLs to view function controllers, facilitating secure, clear redirects after students submit exams or requests for certification details.",
+      description: "Binds endpoint URLs to view function controllers including specific routes for submit and show_exam_result.",
       technologies: ["Django Routing", "RegEx Paths"]
     },
     {
@@ -72,7 +72,7 @@ export default function ProjectDeliverables({ onBack }: ProjectDeliverablesProps
       title: "Success Screen Attempt Screenshot",
       icon: CheckIcon,
       accentColor: "from-emerald-600 to-green-700",
-      link: "https://github.com/BrianGator/Class-Test-Django-Python-SQL/blob/main/project-deliverables/07-final.svg",
+      link: "https://github.com/BrianGator/tfjzl-final-cloud-app-with-database/blob/main/project-deliverables/07-final.png",
       linkLabel: "View Certification Results",
       description: "Comprehensive screenshot capturing the final successful attempt. Renders the 'Congratulations' header response, verified 80%+ scoring, item correctness audit lists.",
       technologies: ["Grading Report Dashboard", "Validation Vector"]

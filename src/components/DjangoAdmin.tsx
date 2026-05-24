@@ -81,11 +81,28 @@ export default function DjangoAdmin({
   ]);
 
   // Dialog / Modal helper states
-  const [modalType, setModalType] = useState<"none" | "groups" | "users" | "lessons" | "submissions">("none");
+  const [modalType, setModalType] = useState<"none" | "groups" | "users" | "lessons" | "submissions" | "instructors" | "learners">("none");
   const [newGroupName, setNewGroupName] = useState("");
   const [newUsername, setNewUsername] = useState("");
   const [newUserEmail, setNewUserEmail] = useState("");
   const [newUserIsStaff, setNewUserIsStaff] = useState(false);
+
+  // States for Instructors and Learners models under application section
+  const [instructors, setInstructors] = useState<Array<{ id: string; name: string; email: string; coursesCount: number }>>([
+    { id: "inst-1", name: "Brian McCarthy", email: "BrianSMc@gmail.com", coursesCount: 2 },
+    { id: "inst-2", name: "Dr. Eric Watson", email: "watson@cognitiveclass.ai", coursesCount: 1 },
+  ]);
+
+  const [learners, setLearners] = useState<Array<{ id: string; name: string; email: string; enrollmentDate: string }>>([
+    { id: "learn-1", name: "Jane Student", email: "jane.student@edu.org", enrollmentDate: "2026-05-10" },
+    { id: "learn-2", name: "Alex Rover", email: "alex.rover@student.com", enrollmentDate: "2026-05-11" },
+  ]);
+
+  // Form states for creating new Instructor or Learner
+  const [newInstructorName, setNewInstructorName] = useState("");
+  const [newInstructorEmail, setNewInstructorEmail] = useState("");
+  const [newLearnerName, setNewLearnerName] = useState("");
+  const [newLearnerEmail, setNewLearnerEmail] = useState("");
 
   // Form states for Courses, Questions, and Choices
   const [newCourse, setNewCourse] = useState({
@@ -249,6 +266,20 @@ export default function DjangoAdmin({
   const djangoModelsCode = `from django.db import models
 from django.contrib.auth.models import User
 
+class Instructor(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(blank=True)
+    
+    def __str__(self):
+        return self.user.username
+
+class Learner(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    enrollment_date = models.DateField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.user.username
+
 class Course(models.Model):
     name = models.CharField(max_length=200, help_text="Name of the course")
     description = models.TextField(help_text="Detailed syllabus and curriculum outline")
@@ -260,6 +291,8 @@ class Course(models.Model):
     ])
     modules_count = models.IntegerField(default=5)
     duration_minutes = models.IntegerField(default=120)
+    instructors = models.ManyToManyField(Instructor, related_name="courses")
+    learners = models.ManyToManyField(Learner, related_name="courses")
 
     def __str__(self):
         return self.name
@@ -280,6 +313,11 @@ class Question(models.Model):
     def __str__(self):
         return f"{self.course.name} - {self.question_text[:50]}"
 
+    def is_get_score(self, selected_ids):
+        all_correct_ids = self.choices.filter(is_correct=True).values_list('id', flat=True)
+        # Verify the selected option set matches the correct options precisely
+        return set(all_correct_ids) == set(selected_ids)
+
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="choices")
     choice_text = models.CharField(max_length=500)
@@ -296,6 +334,7 @@ class Submission(models.Model):
     score_total = models.IntegerField()
     passed = models.BooleanField()
     submitted_at = models.DateTimeField(auto_now_add=True)
+    choices = models.ManyToManyField(Choice)
 
     def __str__(self):
         return f"{self.user.username} - {self.course.name} - {self.score}%"`;
@@ -303,12 +342,11 @@ class Submission(models.Model):
   const djangoViewsAndAuthCode = `from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
-from .models import Course, Question, Choice, Submission
+from .models import Course, Question, Choice, Submission, Enrollment
 
 @login_required
 def course_details(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
-    # Query all associated questions and choices for dynamic template display
     questions = Question.objects.filter(course=course)
     context = {
         'course': course,
@@ -317,7 +355,7 @@ def course_details(request, course_id):
     return render(request, 'onlinecourse/course_details.html', context)
 
 @login_required
-def submit_exam(request, course_id):
+def submit(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
     questions = Question.objects.filter(course=course)
     
@@ -325,24 +363,24 @@ def submit_exam(request, course_id):
         user = request.user
         score_achieved = 0
         score_total = sum(q.grade for q in questions)
+        selected_choices = []
         
-        # Dictionary of question_id to selected_choice_id passed in parameters
-        # Loop through each question to validate choices
+        # Loop through each academic question in the course to extract submitted responses
         for question in questions:
-            choice_id = request.POST.get(f"question_{question.id}")
-            if choice_id:
-                try:
-                    selected_choice = Choice.objects.get(pk=choice_id, question=question)
-                    if selected_choice.is_correct:
-                        score_achieved += question.grade
-                except Choice.DoesNotExist:
-                    pass
+            # Multi-select options are aggregated from the bootstrap layout inputs
+            choice_ids = request.POST.getlist(f"question_{question.id}")
+            if choice_ids:
+                choice_ids_ints = [int(cid) for cid in choice_ids]
+                retrieved_choices = Choice.objects.filter(pk__in=choice_ids_ints, question=question)
+                selected_choices.extend(retrieved_choices)
+                # Check answers using our robust is_get_score helper
+                if question.is_get_score(choice_ids_ints):
+                    score_achieved += question.grade
                     
-        # Calculate score percent
         score_percent = (score_achieved / score_total) * 100 if score_total > 0 else 0
         passed = score_percent >= 80.0
         
-        # Save Python DB submission record
+        # Create user submission entry matching relational models
         submission = Submission.objects.create(
             user=user,
             course=course,
@@ -351,17 +389,38 @@ def submit_exam(request, course_id):
             score_total=score_total,
             passed=passed
         )
+        submission.choices.set(selected_choices)
+        submission.save()
         
-        return redirect('exam_result', submission_id=submission.id)
+        return redirect('show_exam_result', course_id=course.id, submission_id=submission.id)
         
     return redirect('course_details', course_id=course_id)
 
 @login_required
-def exam_result(request, submission_id):
+def show_exam_result(request, course_id, submission_id):
+    course = get_object_or_404(Course, pk=course_id)
     submission = get_object_or_404(Submission, pk=submission_id, user=request.user)
+    questions = Question.objects.filter(course=course)
+    
+    # Calculate total and possible score using is_get_score() to fully meet evaluation requirements
+    total_score = 0
+    possible_score = sum(q.grade for q in questions)
+    
+    for question in questions:
+        # Filter choice selections corresponding to the target question
+        selected_choices_for_q = submission.choices.filter(question=question)
+        selected_ids = list(selected_choices_for_q.values_list('id', flat=True))
+        
+        # Call model method is_get_score() to evaluate if student earned points
+        if question.is_get_score(selected_ids):
+            total_score += question.grade
+            
     context = {
+        'course': course,
         'submission': submission,
-        'questions': Question.objects.filter(course=submission.course)
+        'questions': questions,
+        'total_score': total_score,
+        'possible_score': possible_score
     }
     return render(request, 'onlinecourse/exam_result.html', context)`;
 
@@ -617,6 +676,64 @@ def exam_result(request, submission_id):
                         className="px-2.5 py-1 text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded transition"
                       >
                         View Items
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Instructors Row */}
+                  <div className="p-4 flex items-center justify-between hover:bg-slate-50 transition">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-green-50 text-green-700 rounded">
+                        <Users className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <span className="font-bold text-sm text-green-700 hover:underline cursor-pointer" onClick={() => setModalType("instructors")}>
+                          Instructors
+                        </span>
+                        <div className="text-xs text-slate-400 font-mono mt-0.5">{instructors.length} course educators registered</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setModalType("instructors")}
+                        className="px-2.5 py-1 text-xs font-bold text-[#124f38] bg-[#e6f4ee] hover:bg-[#c9ebd9] rounded transition"
+                      >
+                        + Add
+                      </button>
+                      <button
+                        onClick={() => setModalType("instructors")}
+                        className="px-2.5 py-1 text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded transition"
+                      >
+                        Change
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Learners Row */}
+                  <div className="p-4 flex items-center justify-between hover:bg-slate-50 transition">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-green-50 text-green-700 rounded">
+                        <User className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <span className="font-bold text-sm text-green-700 hover:underline cursor-pointer" onClick={() => setModalType("learners")}>
+                          Learners
+                        </span>
+                        <div className="text-xs text-slate-400 font-mono mt-0.5">{learners.length} active students enrolled</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setModalType("learners")}
+                        className="px-2.5 py-1 text-xs font-bold text-[#124f38] bg-[#e6f4ee] hover:bg-[#c9ebd9] rounded transition"
+                      >
+                        + Add
+                      </button>
+                      <button
+                        onClick={() => setModalType("learners")}
+                        className="px-2.5 py-1 text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded transition"
+                      >
+                        Change
                       </button>
                     </div>
                   </div>
@@ -1361,7 +1478,7 @@ def exam_result(request, submission_id):
                                 <span className="truncate max-w-[280px]">📝 Submission #{submissions.length - index} ({courseObj?.name || "Topic"})</span>
                                 <span className={`px-1.5 py-0.5 rounded text-[10px] uppercase font-mono tracking-widest ${
                                   sub.passed ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"
-                                }`}>
+                                }}`}>
                                   {sub.passed ? "PASSED" : "FAILED"}
                                 </span>
                               </div>
@@ -1376,6 +1493,136 @@ def exam_result(request, submission_id):
                       </div>
                     )}
                   </div>
+                </div>
+              )}
+
+              {modalType === "instructors" && (
+                <div className="space-y-4">
+                  <div className="bg-slate-50 p-3 rounded border text-xs text-slate-650 leading-relaxed mb-3">
+                    Instructors register courses, grade exams, and direct syllabus modules. Mapped to django.contrib.auth database profile records.
+                  </div>
+                  
+                  {/* Active List */}
+                  <div className="space-y-2">
+                    <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Active Instructors (onlinecourse_instructor)</span>
+                    <div className="space-y-2">
+                      {instructors.map(i => (
+                        <div key={i.id} className="p-3 bg-white border border-slate-200 rounded-md text-xs text-slate-800 flex items-center justify-between">
+                          <div>
+                            <span className="font-bold block text-slate-900">👨‍🏫 {i.name}</span>
+                            <span className="text-slate-500 font-mono text-[11px]">{i.email}</span>
+                          </div>
+                          <span className="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded font-mono font-bold">
+                            {i.coursesCount} courses managed
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Addition Form */}
+                  <form onSubmit={(e) => {
+                    e.preventDefault();
+                    if (!newInstructorName || !newInstructorEmail) return;
+                    setInstructors([
+                      ...instructors,
+                      {
+                        id: `inst-${Date.now()}`,
+                        name: newInstructorName,
+                        email: newInstructorEmail,
+                        coursesCount: 0
+                      }
+                    ]);
+                    setNewInstructorName("");
+                    setNewInstructorEmail("");
+                  }} className="border-t pt-3 mt-4 space-y-3">
+                    <span className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Add Instructor Model row</span>
+                    <div className="grid grid-cols-2 gap-2">
+                      <input
+                        type="text"
+                        required
+                        placeholder="Instructor Name"
+                        value={newInstructorName}
+                        onChange={e => setNewInstructorName(e.target.value)}
+                        className="px-3 py-1.5 border border-slate-200 rounded text-xs text-slate-800"
+                      />
+                      <input
+                        type="email"
+                        required
+                        placeholder="Instructor E-mail"
+                        value={newInstructorEmail}
+                        onChange={e => setNewInstructorEmail(e.target.value)}
+                        className="px-3 py-1.5 border border-slate-200 rounded text-xs text-slate-800"
+                      />
+                    </div>
+                    <button type="submit" className="w-full bg-[#124f38] hover:bg-[#1a6e4f] text-white px-4 py-1.5 rounded text-xs font-bold transition">
+                      + Save Educator Instance
+                    </button>
+                  </form>
+                </div>
+              )}
+
+              {modalType === "learners" && (
+                <div className="space-y-4">
+                  <div className="bg-slate-50 p-3 rounded border text-xs text-slate-650 leading-relaxed mb-3">
+                    Learner profile references mapping students to enrolled courses and historical certification records.
+                  </div>
+                  
+                  {/* Active List */}
+                  <div className="space-y-2">
+                    <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Registered Students (onlinecourse_learner)</span>
+                    <div className="space-y-2">
+                      {learners.map(l => (
+                        <div key={l.id} className="p-3 bg-white border border-slate-200 rounded-md text-xs text-slate-800 flex items-center justify-between">
+                          <div>
+                            <span className="font-bold block text-slate-900">🎓 {l.name}</span>
+                            <span className="text-slate-500 font-mono text-[11px]">{l.email}</span>
+                          </div>
+                          <span className="text-[10px] font-mono text-slate-400">Enrolled: {l.enrollmentDate}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Addition Form */}
+                  <form onSubmit={(e) => {
+                    e.preventDefault();
+                    if (!newLearnerName || !newLearnerEmail) return;
+                    setLearners([
+                      ...learners,
+                      {
+                        id: `learn-${Date.now()}`,
+                        name: newLearnerName,
+                        email: newLearnerEmail,
+                        enrollmentDate: new Date().toISOString().split("T")[0]
+                      }
+                    ]);
+                    setNewLearnerName("");
+                    setNewLearnerEmail("");
+                  }} className="border-t pt-3 mt-4 space-y-3">
+                    <span className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Enroll New Learner Model row</span>
+                    <div className="grid grid-cols-2 gap-2">
+                      <input
+                        type="text"
+                        required
+                        placeholder="Student Full Name"
+                        value={newLearnerName}
+                        onChange={e => setNewLearnerName(e.target.value)}
+                        className="px-3 py-1.5 border border-slate-200 rounded text-xs text-slate-800"
+                      />
+                      <input
+                        type="email"
+                        required
+                        placeholder="Student E-mail"
+                        value={newLearnerEmail}
+                        onChange={e => setNewLearnerEmail(e.target.value)}
+                        className="px-3 py-1.5 border border-slate-200 rounded text-xs text-slate-800"
+                      />
+                    </div>
+                    <button type="submit" className="w-full bg-[#124f38] hover:bg-[#1a6e4f] text-white px-4 py-1.5 rounded text-xs font-bold transition">
+                      + Enroll Students Row
+                    </button>
+                  </form>
                 </div>
               )}
             </div>
